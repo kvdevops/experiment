@@ -56,7 +56,7 @@ echo "$cwd/run_AmbiDexter.sh -g test -t 10 -i 0"
 echo "$cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -i 0"
 echo "$cwd/run_SinBAD.sh -g test -b dynamic1 -t 10 -d 10"
 echo "$cwd/run_SinBAD.sh -g test -b dynamic4 -t 10 -d 10 -w 0.1"
-  EOF
+EOF
   cat $scriptlist | parallel
 
   # check for each tool option: count(ambiguities) == 1
