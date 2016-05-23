@@ -1,0 +1,90 @@
+%{
+#include "yygrammar.h"
+%}
+%%
+","                   { return ','; }
+"&"                   { return '&'; }
+"~"                   { return '~'; }
+"%"                   { return '%'; }
+"!"                   { return '!'; }
+"?"                   { return '?'; }
+"+"                   { return '+'; }
+"-"                   { return '-'; }
+"*"                   { return '*'; }
+"/"                   { return '/'; }
+"("                   { return '('; }
+")"                   { return ')'; }
+"{"                   { return '{'; }
+"}"                   { return '}'; }
+"."                   { return '.'; }
+";"                   { return ';'; }
+":"                   { return ':'; }
+"^"                   { return '^'; }
+"["                   { return '['; }
+"]"                   { return ']'; }
+"="                   { return '='; }
+"<"                   { return '<'; }
+">"                   { return '>'; }
+"|"                   { return '|'; }
+"break_tk"            { return BREAK; }
+"dec_op_tk"           { return DEC_OP; }
+"short_tk"            { return SHORT; }
+"char_tk"             { return CHAR; }
+"struct_tk"           { return STRUCT; }
+"eq_op_tk"            { return EQ_OP; }
+"or_assign_tk"        { return OR_ASSIGN; }
+"double_tk"           { return DOUBLE; }
+"int_tk"              { return INT; }
+"const_tk"            { return CONST; }
+"or_tk"               { return OR_OP; }
+"float_tk"            { return FLOAT; }
+"if_tk"               { return IF; }
+"else_tk"             { return ELSE; }
+"switch_tk"           { return SWITCH; }
+"case_tk"             { return CASE; }
+"return_tk"           { return RETURN; }
+"auto_tk"             { return AUTO; }
+"union_tk"            { return UNION; }
+"id_tk"               { return IDENTIFIER; }
+"for_tk"              { return FOR; }
+"left_assign_tk"      { return LEFT_ASSIGN; }
+"continue_tk"         { return CONTINUE; }
+"constant_tk"         { return CONSTANT; }
+"register_tk"         { return REGISTER; }
+"default_tk"          { return DEFAULT; }
+"extern_tk"           { return EXTERN; }
+"signed_tk"           { return SIGNED; }
+"volatile_tk"         { return VOLATILE; }
+"left_op_tk"          { return LEFT_OP; }
+"sizeof_tk"           { return SIZEOF; }
+"void_tk"             { return VOID; }
+"right_assign_tk"     { return RIGHT_ASSIGN; }
+"while_tk"            { return WHILE; }
+"do_tk"               { return DO; }
+"right_op_tk"         { return RIGHT_OP; }
+"inc_op_tk"           { return INC_OP; }
+"enum_tk"             { return ENUM; }
+"div_assign_tk"       { return DIV_ASSIGN; }
+"long_tk"             { return LONG; }
+"and_assign_tk"       { return AND_ASSIGN; }
+"unsigned_tk"         { return UNSIGNED; }
+"xor_assign_tk"       { return XOR_ASSIGN; }
+"ptr_op_tk"           { return PTR_OP; }
+"typename_tk"         { return TYPE_NAME; }
+"elipsis_tk"          { return ELIPSIS; }
+"sub_assign_tk"       { return SUB_ASSIGN; }
+"static_tk"           { return STATIC; }
+"add_assign_tk"       { return ADD_ASSIGN; }
+"mod_assign_tk"       { return MOD_ASSIGN; }
+"typedef_tk"          { return TYPEDEF; }
+"mul_assign_tk"       { return MUL_ASSIGN; }
+"ne_op_tk"            { return NE_OP; }
+"and_tk"              { return AND_OP; }
+"le_tk"               { return LE_OP; }
+"goto_tk"             { return GOTO; }
+"ge_op_tk"            { return GE_OP; }
+"string_lit_tk"       { return STRING_LITERAL; }
+" "         { /* skip blank */ }
+\r          { yypos++; /* adjust linenumber and skip newline */ }
+\n          { yypos++; /* adjust linenumber and skip newline */ }
+.           { printf("\n++ illegal token : %s ++", yytext); yyerror("illegal xyz token"); }
