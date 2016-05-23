@@ -142,27 +142,30 @@ done
 
 echo "Generated list of scripts ($scriptlist); running them in parallel ..."
 
-[ ! -f ~/machinefile ] && echo "I need ~/machinefile with list of hosts to run jobs"
+if [ "$exp" == "travis" ]; then
+  # just run the comands sequentially and exit
+  cat $scriptlist | parallel
+else
+  [ ! -f ~/machinefile ] && echo "I need ~/machinefile with list of hosts to run jobs"
+  nodelist=""
+  for host in $(cat ~/machinefile)
+  do
+      nodelist="$cores_per_host/$host,$nodelist"
+  done
+  pllnodes=$(echo $nodelist | sed -e 's/,$//')
 
-nodelist=""
-for host in $(cat ~/machinefile)
-do 
-    nodelist="$cores_per_host/$host,$nodelist"
-done
-pllnodes=$(echo $nodelist | sed -e 's/,$//')
+  echo $pllnodes
 
-echo $pllnodes
+  expstart=$(date +%s)
+  cat $scriptlist | parallel -u -S $pllnodes
+  expend=$(date +%s)
+  expelapsed=$(($expend - $expstart))
 
-expstart=$(date +%s)
-cat $scriptlist | parallel -u -S $pllnodes
-expend=$(date +%s)
-expelapsed=$(($expend - $expstart))
+  echo -e "\\n===> experiment complete in $expelapsed seconds \n"
+  cd $cwd
+  tar czf results.tar.gz results
+  echo -e "\\n===> results - results.tar.gz \\n"
+  echo -e "\\n pretty printing results to $ppresults \\n"
+  ./ppresults.sh > $ppresults 2>&1
+fi
 
-echo -e "\\n===> experiment complete in $expelapsed seconds \n"
-
-cd $cwd
-tar czf results.tar.gz results
-echo -e "\\n===> results - results.tar.gz \\n"
-
-echo -e "\\n pretty printing results to $ppresults \\n"
-./ppresults.sh > $ppresults 2>&1
