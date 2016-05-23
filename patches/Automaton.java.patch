@@ -1,0 +1,29 @@
+--- src/dk/brics/automaton/Automaton.java	2014-08-05 23:45:45.982304557 +0100
++++ src/dk/brics/automaton/Automaton.java.modified	2014-08-05 23:45:40.878304650 +0100
+@@ -48,6 +48,11 @@
+ import java.util.Map;
+ import java.util.Set;
+ 
++import dk.brics.grammar.parser.Parser;
++import dk.brics.grammar.Production;
++import dk.brics.grammar.operations.AutomataOperations;
++
++
+ /**
+  * Finite-state automaton with regular expression operations.
+  * <p>
+@@ -950,6 +955,14 @@
+ 		return BasicOperations.getShortestExample(this, accepted);
+ 	}
+ 	
++    public String getVerticalShortestExample(boolean accepted, Production p1, Production p2, Parser parser, boolean parse_every_string) {
++        return BasicOperations.getVerticalShortestExample(this, accepted, p1, p2, parser, parse_every_string);
++    }    
++                            
++    public String getHorizontalShortestExample(boolean accepted, Production p, int index, Parser parser, boolean parse_every_string) {
++        return BasicOperations.getHorizontalShortestExample(this, accepted, p, index, parser, parse_every_string);
++    } 
++	
+ 	/**
+ 	 * See {@link BasicOperations#run(Automaton, String)}.
+ 	 */

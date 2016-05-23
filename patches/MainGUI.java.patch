@@ -1,0 +1,11 @@
+--- src/dk/brics/grammar/main/MainGUI.java	2014-08-02 01:52:16.755908111 +0100
++++ src/dk/brics/grammar/main/MainGUI.java.modified	2014-08-02 01:52:03.115908361 +0100
+@@ -476,7 +476,7 @@
+ 						Main.run(grammar, grammarfile_textfield.getText(), 
+ 								text, text != null ? textfile_textfield.getText() : null, action.equals("analyze"), 
+ 								unfold_level, unfoldleft_textfield.getText().trim(), unfoldright_textfield.getText().trim(), 
+-								verbose_checkbox.isSelected(), dumpast_checkbox.isSelected(), tokenize_checkbox.isSelected(), false, out);
++								verbose_checkbox.isSelected(), dumpast_checkbox.isSelected(), tokenize_checkbox.isSelected(), false, out, false);
+ 						abort_button.setEnabled(false);
+ 						String output = output_textarea.getText();
+ 						if (output.indexOf("digraph AST {") != -1 && output.endsWith("}" + System.getProperty("line.separator"))) 

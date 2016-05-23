@@ -1,0 +1,36 @@
+--- src/dk/brics/grammar/ambiguity/RegularApproximation2.java	2014-08-05 23:41:51.270308855 +0100
++++ src/dk/brics/grammar/ambiguity/RegularApproximation2.java.modified	2014-08-05 23:40:05.034310800 +0100
+@@ -13,6 +13,10 @@
+ import dk.brics.grammar.RegexpTerminalEntity;
+ import dk.brics.grammar.StringTerminalEntity;
+ 
++import dk.brics.grammar.Grammar;
++import dk.brics.grammar.Production;
++import dk.brics.grammar.parser.Parser;
++
+ /**
+  * Variation of {@link RegularApproximation} that adds extra approximation on unfolded grammars.
+  */
+@@ -97,10 +101,22 @@
+ 		return HORIZONTAL_NOT_APPLICABLE;
+ 	}
+ 
++	public HorizontalOverlapString checkHorizontalOverlap(Production p, int index, Parser parser, boolean parse_every_string) {
++		if (enabled)
++			return super.checkHorizontalOverlap(p, index, parser, parse_every_string);
++		return HORIZONTAL_NOT_APPLICABLE;
++	}
++
+ 	@Override
+ 	public VerticalOverlapString checkVerticalOverlap(Production p1, Production p2) {
+ 		if (enabled)
+ 			return super.checkVerticalOverlap(p1, p2);
+ 		return VERTICAL_NOT_APPLICABLE;
+ 	}
++
++	public VerticalOverlapString checkVerticalOverlap(Production p1, Production p2, Parser parser, boolean parse_every_string) {
++		if (enabled)
++			return super.checkVerticalOverlap(p1, p2, parser, parse_every_string);
++		return VERTICAL_NOT_APPLICABLE;
++	}
+ }

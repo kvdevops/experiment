@@ -1,0 +1,11 @@
+--- src/dk/brics/grammar/main/MainServlet.java	2014-08-02 01:48:43.971912007 +0100
++++ src/dk/brics/grammar/main/MainServlet.java.modified	2014-08-02 01:48:29.099912279 +0100
+@@ -172,7 +172,7 @@
+ 	    	TimeoutThread timer = new TimeoutThread(10);
+ 	    	try {
+ 	    		Main.run(grammar, grammar_location, text, text_location, mode.equals("analyze"), 
+-	    				unfold_level, unfold_left, unfold_right, verbose, dumpast, tokenize, false, out); // TODO: memory limit?
++	    				unfold_level, unfold_left, unfold_right, verbose, dumpast, tokenize, false, out, false); // TODO: memory limit?
+ 	    	} finally {
+ 	    		timer.cancel();					
+ 	    	}

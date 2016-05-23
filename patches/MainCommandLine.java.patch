@@ -1,0 +1,36 @@
+--- src/dk/brics/grammar/main/MainCommandLine.java	2014-08-02 00:21:58.116007329 +0100
++++ src/dk/brics/grammar/main/MainCommandLine.java.modified	2014-08-02 00:21:42.272007619 +0100
+@@ -27,6 +27,7 @@
+ 		String unfold_right = "";
+ 		boolean bad = false;
+ 		boolean help = false;
++		boolean parse_every_string = false;
+ 		for (int i = 0; i < args.length; i++) {
+ 			String a = args[i];
+ 			if (a.startsWith("-")) {
+@@ -56,6 +57,8 @@
+ 					unfold_left = args[++i];
+ 				else if (a.equals("-r") && i + 1 < args.length)
+ 					unfold_right = args[++i];
++				else if (a.equals("-k"))
++					parse_every_string = true;
+ 				else
+ 					bad = true;
+ 			} else {
+@@ -91,6 +94,7 @@
+ 					"-l <left parentheses>  left parentheses symbols for grammar unfolding\n" +
+ 					"-r <right parentheses> right parentheses symbols for grammar unfolding\n" +
+ 					"-z                     tokenize grammar (for ambiguity analysis)\n" +
++					"-k                     parse each string generated from approximated automaton \n" +
+ 					"\n" +
+ 					"System properties:\n" +
+ 					"-Ddk.brics.grammar.parser.debug            extra output from parser\n" +
+@@ -104,7 +108,7 @@
+ 			String grammar = Loader.getString(grammar_location, grammar_encoding);
+ 			String text = text_location != null ? Loader.getString(text_location, text_encoding) : null;
+ 			int status = Main.run(grammar, grammar_location, text, text_location, ambiguity_analysis, 
+-					unfold_level, unfold_left, unfold_right, verbose, dump_ast, tokenize, true, new PrintWriter(System.out, true));
++					unfold_level, unfold_left, unfold_right, verbose, dump_ast, tokenize, true, new PrintWriter(System.out, true), parse_every_string);
+ 			if (status != 0)
+ 				System.exit(status);
+ 		} catch (IllegalArgumentException e) {

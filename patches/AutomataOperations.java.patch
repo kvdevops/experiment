@@ -1,0 +1,45 @@
+--- src/dk/brics/grammar/operations/AutomataOperations.java	2014-08-05 23:55:33.610293797 +0100
++++ src/dk/brics/grammar/operations/AutomataOperations.java.modified	2014-08-05 23:55:26.858293921 +0100
+@@ -7,6 +7,10 @@
+ import dk.brics.grammar.ambiguity.HorizontalOverlapString;
+ import dk.brics.grammar.ambiguity.RegularApproximation;
+ 
++import dk.brics.grammar.parser.Parser;
++import dk.brics.grammar.Production;
++import dk.brics.grammar.operations.AutomataOperations;
++
+ /**
+  * Special automata operations used in {@link RegularApproximation}.
+  */
+@@ -85,6 +89,31 @@
+ 		HorizontalOverlapString h = null;
+ 		StringBuilder b = new StringBuilder();
+ 		if (s != null) {
++			int i = 0;
++			while (s.charAt(i*2) == '\u0000') {
++				b.append(s.charAt(i*2+1));
++				i++;
++			}
++			int i1 = i++;
++			while (s.charAt(i*2) == '\u0000') {
++				b.append(s.charAt(i*2+1));
++				i++;
++			}
++			int i2 = (i++)-1;
++			while (i*2+1 < s.length()) {
++				b.append(s.charAt(i*2+1));
++				i++;
++			}
++			h = new HorizontalOverlapString(b.toString(), i1, i2);
++		}
++		return h;
++	}
++
++	public static HorizontalOverlapString getHorizontalOverlapString(Automaton overlap, Production p, int index, Parser parser, boolean parse_every_string) {
++		String s = overlap.getHorizontalShortestExample(true, p, index, parser, parse_every_string);
++		HorizontalOverlapString h = null;
++		StringBuilder b = new StringBuilder();
++		if (s != null) {
+ 			int i = 0;
+ 			while (s.charAt(i*2) == '\u0000') {
+ 				b.append(s.charAt(i*2+1));

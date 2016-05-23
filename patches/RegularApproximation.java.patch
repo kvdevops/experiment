@@ -1,0 +1,42 @@
+--- src/dk/brics/grammar/ambiguity/RegularApproximation.java	2014-08-05 23:37:30.726313625 +0100
++++ src/dk/brics/grammar/ambiguity/RegularApproximation.java.modified	2014-08-05 23:39:02.050311953 +0100
+@@ -22,6 +22,8 @@
+ import dk.brics.string.mlfa.MLFA;
+ import dk.brics.string.mlfa.operations.MLFA2Automaton;
+ 
++import dk.brics.grammar.parser.Parser;
++
+ /**
+  * Regular approximation based on Mohri &amp; Nederhof's technique.
+  */
+@@ -163,6 +165,15 @@
+ 		return AutomataOperations.getOverlapString(overlap);
+ 	}
+ 
++    // Krish: pass Parser
++	public HorizontalOverlapString checkHorizontalOverlap(Production p, int index, Parser parser, boolean parse_every_string) {
++		Automaton a1 = getAutomaton(p.getEntities(), 0, index);
++		Automaton a2 = getAutomaton(p.getEntities(), index, p.getEntities().size());
++		Automaton overlap = AutomataOperations.getOverlap(a1, a2);
++		// TODO: would it help to intersect overlap with p? (dangling-else...)
++		return AutomataOperations.getHorizontalOverlapString(overlap, p, index, parser, parse_every_string);
++	}
++
+ 	@Override
+ 	public VerticalOverlapString checkVerticalOverlap(Production p1, Production p2) {
+ 		Automaton a1 = getAutomaton(p1);
+@@ -172,4 +183,14 @@
+ 		String s = overlap.getShortestExample(true);
+ 		return (s != null) ? new VerticalOverlapString(s) : null;
+ 	}
++
++    // Krish: pass Parser around to check ambiguity on each String
++	public VerticalOverlapString checkVerticalOverlap(Production p1, Production p2, Parser parser, boolean parse_every_string) {
++		Automaton a1 = getAutomaton(p1);
++		Automaton a2 = getAutomaton(p2);
++		Automaton overlap = a1.intersection(a2); // TODO: make combined operation for intersection+getShortestExample
++		// TODO: would it help to intersect overlap with p1/p2?
++		String s = overlap.getVerticalShortestExample(true, p1, p2, parser, parse_every_string);
++		return (s != null) ? new VerticalOverlapString(s) : null;
++	}
+ }

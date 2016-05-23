@@ -1,0 +1,18 @@
+--- src/dk/brics/grammar/ambiguity/AmbiguityAnalyzer.java	2014-07-30 23:16:44.548737857 +0100
++++ src/dk/brics/grammar/ambiguity/AmbiguityAnalyzer.java.modified	2014-07-30 23:16:22.124738267 +0100
+@@ -265,6 +265,7 @@
+ 								out.println("    matched as \"" + escape(decode(overlap.getX())) + "\" <--> \"" + 
+ 										escape(decode(overlap.getAY())) + "\" or \"" + escape(decode(overlap.getXA())) + 
+ 										"\" <--> \"" + escape(decode(overlap.getY())) + "\"");
++							    System.exit(1);
+ 								certain_horizontal_ambiguities++;
+ 							} else
+ 								potential_horizontal_ambiguities++;
+@@ -339,6 +340,7 @@
+ 							out.println("*** " + (certain ? "" : "potential ") + "vertical ambiguity: " + describeVertical(nt, p1, p2));
+ 							if (certain) {
+ 								out.println("    ambiguous string: \"" + escape(decode(overlap.getString())) + "\"");
++								System.exit(1);
+ 								certain_vertical_ambiguities++;
+ 							} else
+ 								potential_vertical_ambiguities++;

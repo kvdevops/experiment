@@ -1,0 +1,86 @@
+--- entire.c	2014-10-19 15:04:27.222220750 +0100
++++ entire.c.modified	2014-11-14 13:43:19.683153354 +0000
+@@ -712,17 +712,17 @@
+ 
+ 	 printf("\n");
+ 	 printf("PARSE 1\n");
+-	 printf("-------\n");
++	 printf("\n");
+ 	 printf("\n");
+ 	 print_tree(i);
+ 
+ 	 printf("\n");
+ 	 printf("PARSE 2\n");
+-	 printf("-------\n");
++	 printf("\n");
+ 	 printf("\n");
+ 	 print_tree(last_item+1);
+ 
+-	 printf("\n");
++	 printf("\n------\n");
+ 	 printf("For ``%s'' at ", yyprintname(yygrammar[d-1]));
+ 	 print_coordinate(d-1);
+ 	 printf(",\n");
+@@ -737,8 +737,8 @@
+ 
+ 	 printf("\nEND OF GRAMMAR DEBUG INFORMATION\n\n");
+          yypos = posforerrormsg;
+-	 yyerror("source text uncovers unhandled grammar ambiguity");
+-	 exit(1);
++	 printf("source text uncovers unhandled grammar ambiguity");
++	 exit(2);
+ 
+ 	 selected_left = l;
+ 	 selected_sub = s;
+@@ -863,15 +863,15 @@
+ 
+       printf("\n");
+       printf("TREE 1\n");
+-      printf("------\n");
++      printf("\n");
+       printf("\n");
+       print_tree(sub[i]);
+       printf("\n");
+       printf("TREE 2\n");
+-      printf("------\n");
+       printf("\n");
+-      print_tree(s);
+       printf("\n");
++      print_tree(s);
++      printf("\n------\n");
+ 
+       if (test_for_cycle(s, sub[i])) {
+ 	 /* not possible */
+@@ -895,8 +895,8 @@
+       printf("\nEND OF GRAMMAR DEBUG INFORMATION\n\n");
+ 
+       yypos = posforerrormsg;
+-      yyerror("source text uncovers unhandled grammar ambiguity");
+-      exit(1);
++      printf("*** source text uncovers unhandled grammar ambiguity");
++      exit(2);
+ 
+    }
+    else if ((prio1 < 0) || (prio2 < 0)) {
+@@ -916,8 +916,8 @@
+                   yyprintname(yygrammar[d-1]));
+                printf("\nEND OF GRAMMAR DEBUG INFORMATION\n\n");
+                printf("-b-\n");
+-               yyerror("source text uncovers unhandled grammar ambiguity");
+-               exit(1);
++               printf("source text uncovers unhandled grammar ambiguity");
++               exit(2);
+             }
+          }
+ #endif
+@@ -941,8 +941,8 @@
+ 	       yyprintname(yygrammar[d-1]));
+ 	    printf("\nEND OF GRAMMAR DEBUG INFORMATION\n\n");
+             yypos = posforerrormsg;
+-	    yyerror("source text uncovers unhandled grammar ambiguity");
+-	    exit(1);
++	    printf("source text uncovers unhandled grammar ambiguity");
++	    exit(2);
+ 	 }
+       }
+ #endif

@@ -1,0 +1,31 @@
+--- nl/cwi/sen1/AmbiDexter/derivgen/ParallelDerivationGenerator.java	2014-03-14 16:27:17.127829251 +0000
++++ nl/cwi/sen1/AmbiDexter/derivgen/ParallelDerivationGenerator.java.modified	2014-03-14 16:27:14.103829307 +0000
+@@ -189,6 +189,11 @@
+ 		for (int z = 0; z < len; z++) {
+ 			s.add(sentence[z + from]);
+ 		}
++		// for displaying sentence - Krish
++		SymbolString sen = new SymbolString(to);
++		for (int zz = 0; zz < to; zz++) {
++			sen.add(sentence[zz]);
++		}		
+ 		
+ 		boolean isnew;
+ 		Relation<Symbol,SymbolString> r = possibleAmbiguities.get(len);
+@@ -211,6 +216,9 @@
+ 						reallyAmbiguous = false;
+ 					} else {
+ 						monitor.ambiguousString(config, n.yield(), (NonTerminal) n.getRootSymbol(), "" + workerId + ": ");
++						// display sentence and exit
++						System.out.println("ambiguous sentence: " + sen);
++						System.exit(0);
+ 					}
+ 				} else {
+ 					monitor.ambiguousString(config, s, nt, "" + workerId + ": ");
+@@ -337,4 +345,4 @@
+ 	protected interface IStackFrame {
+ 	
+ 	}
+-}
+\ No newline at end of file
++}

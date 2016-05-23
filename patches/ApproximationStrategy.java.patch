@@ -1,0 +1,73 @@
+--- src/dk/brics/grammar/ambiguity/ApproximationStrategy.java	2014-08-05 23:31:59.614319688 +0100
++++ src/dk/brics/grammar/ambiguity/ApproximationStrategy.java.modified	2014-08-05 23:31:45.898319939 +0100
+@@ -4,6 +4,8 @@
+ 
+ import dk.brics.grammar.Grammar;
+ import dk.brics.grammar.Production;
++import dk.brics.grammar.parser.Parser;
++
+ 
+ /**
+  * Abstract base class for approximation strategies.
+@@ -102,6 +104,19 @@
+ 		return overlap;
+ 	}
+ 
++    // Krish: pass Parser so we can parse each string generated and check for ambiguity
++	public final VerticalOverlapString verticalCheck(Production p1, Production p2, Parser parser, boolean parse_every_string) {
++		VerticalOverlapString overlap = checkVerticalOverlap(p1, p2, parser, parse_every_string);
++		if (overlap != ApproximationStrategy.VERTICAL_NOT_APPLICABLE)
++			if (overlap == null)
++				passed_vertical_checks++;
++			else
++				failed_vertical_checks++;
++		else
++			na_vertical_checks++;
++		return overlap;
++	}
++
+ 	/**
+ 	 * Conservatively checks horizontal overlap in a production.
+ 	 * This method is invoked by <tt>AmbiguityAnalyzer</tt>.
+@@ -122,6 +137,19 @@
+ 		return overlap;
+ 	}
+ 
++    // Krish: Pass Parser to check for ambiguity on each string
++	public final HorizontalOverlapString horizontalCheck(Production p, int index, Parser parser, boolean parse_every_string) {
++		HorizontalOverlapString overlap = checkHorizontalOverlap(p, index, parser, parse_every_string);
++		if (overlap != ApproximationStrategy.HORIZONTAL_NOT_APPLICABLE)
++			if (overlap == null)
++				passed_horizontal_checks++;
++			else
++				failed_horizontal_checks++;
++		else
++			na_horizontal_checks++;
++		return overlap;
++	}
++
+ 	/**
+ 	 * Conservatively checks vertical overlap of two productions of the same nonterminal.
+ 	 * This method is typically implemented in a subclass.
+@@ -135,6 +163,10 @@
+ 		return ApproximationStrategy.VERTICAL_NOT_APPLICABLE;
+ 	}
+ 	
++	protected VerticalOverlapString checkVerticalOverlap(Production p1, Production p2, Parser parser, boolean parse_every_string) {
++		return ApproximationStrategy.VERTICAL_NOT_APPLICABLE;
++	}
++	
+ 	/**
+ 	 * Conservatively checks horizontal overlap in a production.
+ 	 * This method is typically implemented in a subclass.
+@@ -148,6 +180,10 @@
+ 		return ApproximationStrategy.HORIZONTAL_NOT_APPLICABLE;
+ 	}
+ 	
++	protected HorizontalOverlapString checkHorizontalOverlap(Production p, int index, Parser parser, boolean parse_every_string) {
++		return ApproximationStrategy.HORIZONTAL_NOT_APPLICABLE;
++	}
++	
+ 	/**
+ 	 * Invoked once per nonterminal when all its vertical checks are done (in the outer loop).
+ 	 * Default implementation does nothing.

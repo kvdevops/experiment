@@ -1,0 +1,32 @@
+--- src/dk/brics/grammar/ambiguity/TerminalApproximation.java	2014-08-02 23:22:02.136477104 +0100
++++ src/dk/brics/grammar/ambiguity/TerminalApproximation.java.modified	2014-08-02 23:21:57.632477186 +0100
+@@ -18,6 +18,7 @@
+ import dk.brics.grammar.operations.NullableFinder;
+ import dk.brics.grammar.operations.TerminalFinder;
+ 
++import dk.brics.grammar.parser.Parser;
+ /**
+  * Terminal approximation, using terminals, nullables, and FIRST/LAST sets.
+  */
+@@ -156,6 +157,11 @@
+ 		return HORIZONTAL_NOT_APPLICABLE;
+ 	}
+ 
++    // krish: mostly for completion. 
++	public HorizontalOverlapString checkHorizontalOverlap(Production p, int index, Parser parser) {
++        return checkHorizontalOverlap(p, index);
++    }
++
+ 	@Override
+ 	public VerticalOverlapString checkVerticalOverlap(Production p1, Production p2) { // FIXME: handle MAX regexps
+ 		// check whether the empty string can/cannot be derived
+@@ -186,4 +192,9 @@
+ 				return null;
+ 		return VERTICAL_NOT_APPLICABLE;
+ 	}
++
++    // Krish: mostly for completion
++	public VerticalOverlapString checkVerticalOverlap(Production p1, Production p2, Parser parser) {
++        return checkVerticalOverlap(p1, p2);
++    }
+ }

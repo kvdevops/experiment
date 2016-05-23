@@ -1,0 +1,52 @@
+--- amber.c	2013-10-07 16:08:29.725642720 +0100
++++ amber.c.modified	2013-10-07 16:07:59.990467103 +0100
+@@ -47,6 +47,9 @@
+ int ELLIPSIS = 0;
+ int iteration = 1;
+ 
++#define TICKWIDTH 7
++int tick;
++
+ /*============================================================================*/
+ 
+ extern char *yyprintname();
+@@ -640,6 +643,7 @@
+ /*----------------------------------------------------------------------------*/
+ 
+ int ambiguity_count = 0;
++int source_length;
+ 
+ PRIVATE conjunctive_ambiguity(i, d, l, s)
+    int i, d, l, s;
+@@ -998,6 +1002,12 @@
+       else if (sub[i] != s) {
+ 	 disjunctive_ambiguity(i, d, l, s);
+       }
++	  if (ambiguity_count > 0) {
++	    printf("sentence: ");
++	    print_sourcetext(source_length);
++	    printf("\ntick: %d \n",tick);
++	   	exit(0);
++	  }      
+ #endif
+ 
+    }
+@@ -1516,9 +1526,6 @@
+ int VALID[MAXVALIDTOKENS+1];
+ int ACTUAL[MAXVALIDTOKENS+1];
+ 
+-#define TICKWIDTH 7
+-int tick;
+-
+ int RESOURCES = 0;
+ int BALANCING = 0;
+ 
+@@ -1703,7 +1710,7 @@
+ 	 ACTUAL[n] = i;
+ 	 set_current_token(valid_token[i], n);
+ 	 source[n] = sym;
+-
++     source_length = n;
+ 	 next_itemlist();
+ 
+ 	 extend(n+1, dollar_son);

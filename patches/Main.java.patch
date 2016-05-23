@@ -1,0 +1,28 @@
+--- src/dk/brics/grammar/main/Main.java	2014-08-02 00:17:46.864011930 +0100
++++ src/dk/brics/grammar/main/Main.java.modified	2014-08-02 00:17:38.592012081 +0100
+@@ -61,6 +61,7 @@
+ 	 * @param dump_ast if true, dump AST after parsing
+ 	 * @param tokenize if true, tokenize grammar before ambiguity analysis
+ 	 * @param out print writer for output
++	 * @param parse_every_string parse every string generated from the approximated automaton
+ 	 * @return status code (0 = everything ok, -1 = illegal input, -2 = parse error in grammar, 
+ 	 *                      -3 = parse error in text, -4 = other error in grammar, 
+ 	 *                      -5 = potential ambiguity in grammar)
+@@ -72,7 +73,7 @@
+ 	public static int run(String grammar, String grammar_location, String text, String text_location,
+ 			boolean ambiguity_analysis, int unfold_level, String unfold_left, String unfold_right, 
+ 			boolean verbose, boolean dump_ast, boolean tokenize, boolean extrastats, 
+-			PrintWriter out) 
++			PrintWriter out, boolean parse_every_string) 
+ 	throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException {
+ 		AmbiguityAnalyzer a = null;
+ 		Grammar g = null;
+@@ -112,7 +113,7 @@
+ 						out.println("unfolding grammar");
+ 					g2 = new Unfolder(out).unfold(g2, unfold_level, unfold_left, unfold_right);
+ 				}
+-				a = new AmbiguityAnalyzer(out, verbose);
++				a = new AmbiguityAnalyzer(out, verbose, parse_every_string);
+ 				long t = System.currentTimeMillis();
+ 				a.analyze(g2);
+ 				time_analysis = System.currentTimeMillis() - t;
