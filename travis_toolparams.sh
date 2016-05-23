@@ -8,38 +8,9 @@ grammardir="$cwd/grammars"
 lexdir="$grammardir/lex"
 export gset grammardir lexdir
 
-testgrammars="amb2"
-export testgrammars
-
-memlimit="512m"
-timelimits="10"
-cores_per_host="1"
-export memlimit timelimits cores_per_host
-
-
-### SETTING VALUES FOR EACH TOOL ###
-
-#ACLA
-
-#Amber
-amber_n_examples="10000000000"
-amber_n_length="30"
-export amber_n_examples amber_n_length
-
-#AmbiDexter
-ambidexter_n_length="10"
-export ambidexter_n_length 
-
-#SinBAD
-backends="dynamic1 dynamic3"
-wgtbackends="dynamic4 dynamic7 dynamic11 dynamic12"
-weights="0.1"
-Tdepths="10"
-export backends wgtbackends weights Tdepths 
-
-resultsdir="$cwd/results"
-ppresults="$cwd/ppresults.txt"
-export resultsdir ppresults
+export testgrammars="amb2"
+export memlimit="512m"
+export resultsdir="$cwd/results"
 
 export accentdir="$wrkdir/accent"
 export ACCENT_DIR=$accentdir

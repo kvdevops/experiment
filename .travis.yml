@@ -2,8 +2,6 @@ language: python
 python:
   - "2.7"
 install: sudo bin/install_deps.sh
-before_script:
-  - bin/prep_exp.sh 
 script:
   - ./run_experiment.sh -d /var/tmp/wrkdir -x travis
 branches:
