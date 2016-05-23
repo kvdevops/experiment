@@ -46,7 +46,7 @@ scriptlist="$cwd/scriptlist"
 
 if [ "$exp" == "travis" ]; then
   # just run the comands sequentially and exit
-  cat << EOF > $scriptlist
+  cat <<EOF > $scriptlist
 echo "$cwd/run_ACLA.sh -g test -t 10"
 echo "$cwd/run_Amber.sh -g test -t 10 -n 1000000"
 echo "$cwd/run_Amber.sh -g test -t 10 -l 10"
