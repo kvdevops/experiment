@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # We assume the following programs/tools exist:
 # gmake, wget, git, bunzip2, PyPy (Python 2.7), Java, patch, timeout, mktemp, flex, cc, ant
@@ -43,36 +43,6 @@ else
 fi
 
 export PYTHON 
-
-java -version 2>&1 | tail -n 1 | grep "OpenJDK .*Server VM (build [a-zA-Z0-9.\-]*, mixed mode)" > /dev/null 2> /dev/null
-if [ $? -ne 0 ]; then
-    cat << EOF
-Warning: incorrect version of Java detected. Expected:
-  OpenJDK Server VM (build ..., mixed mode)
-You should download the correct version and put it in your PATH.
-EOF
-    echo -n "Continue building anyway? [Ny] "
-    read answer
-    case "$answer" in
-        y | Y) ;;
-        *) exit 1;;
-    esac
-fi
-
-$PYTHON -V 2>&1 | egrep -o '[0-9].[0-9]' > /dev/null 2> /dev/null
-if [ $? -ne 0 ]; then
-    cat << EOF
-Warning: incorrect version of Python detected. Expected:
-  Python 2.7 or above
-You should download the correct version and put it in your PATH.
-EOF
-    echo -n "Continue building anyway? [Ny] "
-    read answer
-    case "$answer" in
-        y | Y) ;;
-        *) exit 1;;
-    esac
-fi
 
 if [ $# -eq 0 ]; then
     wrkdir=`pwd`
