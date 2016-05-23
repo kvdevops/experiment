@@ -5,7 +5,7 @@ install: sudo bin/install_deps.sh
 before_script:
   - bin/prep_exp.sh 
 script:
-  - run_experiment.sh travis
+  - ./run_experiment.sh -d /var/tmp -x travis
 branches:
   only:
     - master
