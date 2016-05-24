@@ -50,7 +50,7 @@ if [ "$exp" == "travis" ]; then
     [ $(grep -c yes $resultsdir/acla/$g/10s/log) == 1 ] || exit 1
 
     $scriptsdir/run_amber.sh -g $g -t 10 -n 1000000
-    [ $(grep -c yes $resultsdir/amber/$g/10s_examples_1000000/log) == 1 ] || exit 1
+    [ $(grep -c yes $resultsdir/amber/$g/10s_examples_10000000/log) == 1 ] || exit 1
 
     $scriptsdir/run_amber.sh -g $g -t 10 -l 10
     [ $(grep -c yes $resultsdir/amber/$g/10s_length_10/log) == 1 ] || exit 1
