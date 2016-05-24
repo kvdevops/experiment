@@ -1,7 +1,6 @@
 #!/bin/bash
 
-bdir=$(dirname $0)
-. $bdir/env.sh
+. $cwd/env.sh
 
 scriptsdir="$cwd/scripts"
 gset="test"
