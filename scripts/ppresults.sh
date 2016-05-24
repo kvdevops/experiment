@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $cwd/toolparams.sh
+
 pp_acla() {
     g="$1"
     aclarow=""
@@ -203,8 +205,6 @@ pp_sinbad() {
         done
     done
 }
-
-. ./toolparams.sh
 
 for g in $gset
 do  
