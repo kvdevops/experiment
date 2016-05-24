@@ -45,36 +45,34 @@ $scriptsdir/download_grammars.sh
 ./build.sh $wrkdir || exit $?
 
 if [ "$exp" == "travis" ]; then
-  $scriptsdir/run_acla.sh -g test -t 10
-  [ $(grep -c yes $resultsdir/acla/test/10s/log) == 1 ] || exit 1  
+  for g in test lang; do
+    $scriptsdir/run_acla.sh -g $g -t 10
+    [ $(grep -c yes $resultsdir/acla/$g/10s/log) == 1 ] || exit 1
 
-  $scriptsdir/run_acla.sh -g lang -t 10
-  grep -c yes $resultsdir/acla/lang/10s/log  
+    $scriptsdir/run_amber.sh -g $g -t 10 -n 1000000
+    [ $(grep -c yes $resultsdir/amber/$g/10s_examples_1000000/log) == 1 ] || exit 1
 
-  $scriptsdir/run_amber.sh -g test -t 10 -n 1000000
-  [ $(grep -c yes $resultsdir/amber/test/10s_examples_1000000/log) == 1 ] || exit 1  
+    $scriptsdir/run_amber.sh -g $g -t 10 -l 10
+    [ $(grep -c yes $resultsdir/amber/$g/10s_length_10/log) == 1 ] || exit 1
 
-  $scriptsdir/run_amber.sh -g test -t 10 -l 10
-  [ $(grep -c yes $resultsdir/amber/test/10s_length_10/log) == 1 ] || exit 1  
+    $scriptsdir/run_ambidexter.sh -g $g -t 10 -k 10
+    [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-k_10/log) == 1 ] || exit 1
 
-  $scriptsdir/run_ambidexter.sh -g test -t 10 -k 10
-  [ $(grep -c yes $resultsdir/ambidexter/test/10s_-k_10/log) == 1 ] || exit 1  
+    $scriptsdir/run_ambidexter.sh -g $g -t 10 -f slr1 -k 10
+    [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-f_slr1_-k_10/log) == 1 ] || exit 1
 
-  $scriptsdir/run_ambidexter.sh -g test -t 10 -f slr1 -k 10
-  [ $(grep -c yes $resultsdir/ambidexter/test/10s_-f_slr1_-k_10/log) == 1 ] || exit 1  
+    $scriptsdir/run_ambidexter.sh -g $g -t 10 -i 0
+    [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-i_0/log) == 1 ] || exit 1
 
-  $scriptsdir/run_ambidexter.sh -g test -t 10 -i 0
-  [ $(grep -c yes $resultsdir/ambidexter/test/10s_-i_0/log) == 1 ] || exit 1  
+    $scriptsdir/run_ambidexter.sh -g $g -t 10 -f slr1 -i 0
+    [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-f_slr1_-i_0/log) == 1 ] || exit 1
 
-  $scriptsdir/run_ambidexter.sh -g test -t 10 -f slr1 -i 0
-  [ $(grep -c yes $resultsdir/ambidexter/test/10s_-f_slr1_-i_0/log) == 1 ] || exit 1  
+    $scriptsdir/run_sinbad.sh -g $g -b dynamic1 -t 10 -d 10
+    [ $(grep -c yes $resultsdir/sinbad/$g/10s_-b_dynamic1_-d_10/log) == 1 ] || exit 1
 
-  $scriptsdir/run_sinbad.sh -g test -b dynamic1 -t 10 -d 10
-  [ $(grep -c yes $resultsdir/sinbad/test/10s_-b_dynamic1_-d_10/log) == 1 ] || exit 1  
-
-  $scriptsdir/run_sinbad.sh -g test -b dynamic4 -t 10 -d 10 -w 0.1
-  [ $(grep -c yes $resultsdir/sinbad/test/10s_-b_dynamic4_-d_10_-w_0.1/log) == 1 ] || exit 1  
-
+    $scriptsdir/run_sinbad.sh -g $g -b dynamic4 -t 10 -d 10 -w 0.1
+    [ $(grep -c yes $resultsdir/sinbad/$g/10s_-b_dynamic4_-d_10_-w_0.1/log) == 1 ] || exit 1
+  done
   exit 0
 fi
 
