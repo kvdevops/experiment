@@ -41,34 +41,34 @@ echo "export wrkdir=$wrkdir" >> $cwd/env.sh
 # sets up values for our experiment
 . ./toolparams.sh
 
-scriptlist="$cwd/scriptlist"
-> $scriptlist
-
 if [ "$exp" == "travis" ]; then
-  # just run the comands sequentially and exit
-  cat <<EOF > $scriptlist
-echo "$cwd/run_ACLA.sh -g test -t 10"
-echo "$cwd/run_Amber.sh -g test -t 10 -n 1000000"
-echo "$cwd/run_Amber.sh -g test -t 10 -l 10"
-echo "$cwd/run_AmbiDexter.sh -g test -t 10 -k 10"
-echo "$cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -k 10"
-echo "$cwd/run_AmbiDexter.sh -g test -t 10 -i 0"
-echo "$cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -i 0"
-echo "$cwd/run_SinBAD.sh -g test -b dynamic1 -t 10 -d 10"
-echo "$cwd/run_SinBAD.sh -g test -b dynamic4 -t 10 -d 10 -w 0.1"
-EOF
-  cat $scriptlist | parallel
-
-  # check for each tool option: count(ambiguities) == 1
+  $cwd/run_ACLA.sh -g test -t 10
   [ $(grep -c yes $resultsdir/acla/test/10s/log) == 1 ] || exit 1  
+
+  $cwd/run_Amber.sh -g test -t 10 -n 1000000
   [ $(grep -c yes $resultsdir/amber/test/10s_examples_1000000/log) == 1 ] || exit 1  
+
+  $cwd/run_Amber.sh -g test -t 10 -l 10
   [ $(grep -c yes $resultsdir/amber/test/10s_length_10/log) == 1 ] || exit 1  
+
+  $cwd/run_AmbiDexter.sh -g test -t 10 -k 10
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-k_10/log) == 1 ] || exit 1  
+
+  $cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -k 10
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-f_slr1_-k_10/log) == 1 ] || exit 1  
+
+  $cwd/run_AmbiDexter.sh -g test -t 10 -i 0
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-i_0/log) == 1 ] || exit 1  
+
+  $cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -i 0
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-f_slr1_-i_0/log) == 1 ] || exit 1  
+
+  $cwd/run_SinBAD.sh -g test -b dynamic1 -t 10 -d 10
   [ $(grep -c yes $resultsdir/sinbad/test/10s_-b_dynamic1_-d_10/log) == 1 ] || exit 1  
+
+  $cwd/run_SinBAD.sh -g test -b dynamic4 -t 10 -d 10 -w 0.1
   [ $(grep -c yes $resultsdir/sinbad/test/10s_-b_dynamic4_-d_10_-w_0.1/log) == 1 ] || exit 1  
+
   exit 0
 fi
 
@@ -76,6 +76,9 @@ fi
 ./dowload_grammars.sh
 
 [ ! -d $resultsdir ] && mkdir $resultsdir
+
+scriptlist="$cwd/scriptlist"
+> $scriptlist
 
 for g in $gset; do  
   for timelimit in $timelimits; do
