@@ -39,7 +39,7 @@ echo "export wrkdir=$wrkdir" >> $cwd/env.sh
 . ./toolparams.sh
 
 # download grammars that come with ambidexter
-$scriptsdir/dowload_grammars.sh
+$scriptsdir/download_grammars.sh
 
 # now run build.sh to build your tools
 ./build.sh $wrkdir || exit $?
