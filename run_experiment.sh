@@ -26,12 +26,12 @@ usage(){
 [ -z "$exp" ] && usage
 
 cwd=$(pwd)
-echo -e "===> Running $exp experiment from $wrkdir"
+echo -e "===> Tools are setup in $wrkdir"
 mkdir -p $wrkdir
 export cwd wrkdir
 
-ln -sf $cwd/${exp}_toolparams.sh $cwd/toolparams.sh
-cp /dev/null $cwd/env.sh
+ln -sf $cwd/scripts/${exp}_toolparams.sh $cwd/toolparams.sh
+> $cwd/env.sh
 echo "export cwd=$cwd" >> $cwd/env.sh
 echo "export wrkdir=$wrkdir" >> $cwd/env.sh
 
@@ -42,38 +42,38 @@ echo "export wrkdir=$wrkdir" >> $cwd/env.sh
 . ./toolparams.sh
 
 if [ "$exp" == "travis" ]; then
-  $cwd/run_ACLA.sh -g test -t 10
+  $scriptsdir/run_ACLA.sh -g test -t 10
   [ $(grep -c yes $resultsdir/acla/test/10s/log) == 1 ] || exit 1  
 
-  $cwd/run_Amber.sh -g test -t 10 -n 1000000
+  $scriptsdir/run_Amber.sh -g test -t 10 -n 1000000
   [ $(grep -c yes $resultsdir/amber/test/10s_examples_1000000/log) == 1 ] || exit 1  
 
-  $cwd/run_Amber.sh -g test -t 10 -l 10
+  $scriptsdir/run_Amber.sh -g test -t 10 -l 10
   [ $(grep -c yes $resultsdir/amber/test/10s_length_10/log) == 1 ] || exit 1  
 
-  $cwd/run_AmbiDexter.sh -g test -t 10 -k 10
+  $scriptsdir/run_AmbiDexter.sh -g test -t 10 -k 10
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-k_10/log) == 1 ] || exit 1  
 
-  $cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -k 10
+  $scriptsdir/run_AmbiDexter.sh -g test -t 10 -f slr1 -k 10
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-f_slr1_-k_10/log) == 1 ] || exit 1  
 
-  $cwd/run_AmbiDexter.sh -g test -t 10 -i 0
+  $scriptsdir/run_AmbiDexter.sh -g test -t 10 -i 0
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-i_0/log) == 1 ] || exit 1  
 
-  $cwd/run_AmbiDexter.sh -g test -t 10 -f slr1 -i 0
+  $scriptsdir/run_AmbiDexter.sh -g test -t 10 -f slr1 -i 0
   [ $(grep -c yes $resultsdir/ambidexter/test/10s_-f_slr1_-i_0/log) == 1 ] || exit 1  
 
-  $cwd/run_SinBAD.sh -g test -b dynamic1 -t 10 -d 10
+  $scriptsdir/run_SinBAD.sh -g test -b dynamic1 -t 10 -d 10
   [ $(grep -c yes $resultsdir/sinbad/test/10s_-b_dynamic1_-d_10/log) == 1 ] || exit 1  
 
-  $cwd/run_SinBAD.sh -g test -b dynamic4 -t 10 -d 10 -w 0.1
+  $scriptsdir/run_SinBAD.sh -g test -b dynamic4 -t 10 -d 10 -w 0.1
   [ $(grep -c yes $resultsdir/sinbad/test/10s_-b_dynamic4_-d_10_-w_0.1/log) == 1 ] || exit 1  
 
   exit 0
 fi
 
 # download grammars from ambidexter
-./dowload_grammars.sh
+$scriptsdir/dowload_grammars.sh
 
 [ ! -d $resultsdir ] && mkdir $resultsdir
 
@@ -82,20 +82,20 @@ scriptlist="$cwd/scriptlist"
 
 for g in $gset; do  
   for timelimit in $timelimits; do
-      echo "$cwd/run_ACLA.sh -g $g -t $timelimit || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_ACLA.sh -g $g -t $timelimit || exit \$?" >> $scriptlist
   done
 done
 
 for g in $gset; do
   for timelimit in $timelimits; do
     for amberex in $amber_n_examples; do
-      echo "$cwd/run_Amber.sh -g $g -t $timelimit -n $amberex || exit \$?" >> $scriptlist
-      echo "$cwd/run_Amber.sh -g $g -t $timelimit -n $amberex -e || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_Amber.sh -g $g -t $timelimit -n $amberex || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_Amber.sh -g $g -t $timelimit -n $amberex -e || exit \$?" >> $scriptlist
     done
 
     for amberlen in $amber_n_length; do
-      echo "$cwd/run_Amber.sh -g $g -t $timelimit -l $amberlen || exit \$?" >> $scriptlist
-      echo "$cwd/run_Amber.sh -g $g -t $timelimit -l $amberlen -e || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_Amber.sh -g $g -t $timelimit -l $amberlen || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_Amber.sh -g $g -t $timelimit -l $amberlen -e || exit \$?" >> $scriptlist
     done
   done
 done
@@ -103,35 +103,35 @@ done
 for g in $gset; do
   for timelimit in $timelimits; do
     for ambilen in $ambidexter_n_length; do
-      echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -k $ambilen || exit \$?" >> $scriptlist
-      echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f slr1 -k $ambilen || exit \$?" >> $scriptlist
-      echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f lalr1 -k $ambilen || exit \$?" >> $scriptlist
-      echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f lr0 -k $ambilen || exit \$?" >> $scriptlist
-      echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f lr1 -k $ambilen || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -k $ambilen || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f slr1 -k $ambilen || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f lalr1 -k $ambilen || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f lr0 -k $ambilen || exit \$?" >> $scriptlist
+      echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f lr1 -k $ambilen || exit \$?" >> $scriptlist
     done
          
-    echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -i 0 || exit \$?" >> $scriptlist
-    echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f slr1 -i 0 || exit \$?" >> $scriptlist
-    echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f lalr1 -i 0 || exit \$?" >> $scriptlist
-    echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f lr0 -i 0 || exit \$?" >> $scriptlist
-    echo "$cwd/run_AmbiDexter.sh -g $g -t $timelimit -f lr1 -i 0 || exit \$?" >> $scriptlist
+    echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -i 0 || exit \$?" >> $scriptlist
+    echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f slr1 -i 0 || exit \$?" >> $scriptlist
+    echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f lalr1 -i 0 || exit \$?" >> $scriptlist
+    echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f lr0 -i 0 || exit \$?" >> $scriptlist
+    echo "$scriptsdir/run_AmbiDexter.sh -g $g -t $timelimit -f lr1 -i 0 || exit \$?" >> $scriptlist
   done
 done
 
 for g in $gset; do
   for timelimit in $timelimits; do
-    echo "$cwd/run_SinBAD.sh -g $g -b purerandom -t $timelimit || exit \$?" >> $scriptlist
+    echo "$scriptsdir/run_SinBAD.sh -g $g -b purerandom -t $timelimit || exit \$?" >> $scriptlist
 
     for backend in $backends; do
       for d in $Tdepths; do
-        echo "$cwd/run_SinBAD.sh -g $g -b $backend -t $timelimit -d $d || exit \$?" >> $scriptlist
+        echo "$scriptsdir/run_SinBAD.sh -g $g -b $backend -t $timelimit -d $d || exit \$?" >> $scriptlist
       done
     done
 
     for backend in $wgtbackends; do
       for d in $Tdepths; do
         for wgt in $weights; do
-          echo "$cwd/run_SinBAD.sh -g $g -b $backend -t $timelimit -d $d -w $wgt || exit \$?" >> $scriptlist
+          echo "$scriptsdir/run_SinBAD.sh -g $g -b $backend -t $timelimit -d $d -w $wgt || exit \$?" >> $scriptlist
         done
       done
     done

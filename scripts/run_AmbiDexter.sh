@@ -1,10 +1,7 @@
 #!/bin/bash
 
-bdir=$(dirname $0)
-echo $bdir
-. $bdir/toolparams.sh
-
-echo "$(hostname)::($basename $0) $cwd $wrkdir"
+echo $cwd
+. $cwd/toolparams.sh
 
 gset=""
 timelimit=""

@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 
-bdir=$(dirname $0)
-echo $bdir
-. $bdir/toolparams.sh
+echo $cwd
+. $cwd/toolparams.sh
 
 gset=""
 timelimit=""
