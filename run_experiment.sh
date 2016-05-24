@@ -35,15 +35,21 @@ ln -sf $cwd/scripts/${exp}_toolparams.sh $cwd/toolparams.sh
 echo "export cwd=$cwd" >> $cwd/env.sh
 echo "export wrkdir=$wrkdir" >> $cwd/env.sh
 
-# now run build.sh to build your tools
-./build.sh $wrkdir || exit $?
-
 # sets up values for our experiment
 . ./toolparams.sh
+
+# download grammars that come with ambidexter
+$scriptsdir/dowload_grammars.sh
+
+# now run build.sh to build your tools
+./build.sh $wrkdir || exit $?
 
 if [ "$exp" == "travis" ]; then
   $scriptsdir/run_acla.sh -g test -t 10
   [ $(grep -c yes $resultsdir/acla/test/10s/log) == 1 ] || exit 1  
+
+  $scriptsdir/run_acla.sh -g lang -t 10
+  grep -c yes $resultsdir/acla/lang/10s/log  
 
   $scriptsdir/run_amber.sh -g test -t 10 -n 1000000
   [ $(grep -c yes $resultsdir/amber/test/10s_examples_1000000/log) == 1 ] || exit 1  
@@ -71,9 +77,6 @@ if [ "$exp" == "travis" ]; then
 
   exit 0
 fi
-
-# download grammars from ambidexter
-$scriptsdir/dowload_grammars.sh
 
 [ ! -d $resultsdir ] && mkdir $resultsdir
 

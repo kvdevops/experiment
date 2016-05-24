@@ -2,15 +2,18 @@
 
 . $cwd/env.sh
 
-scriptsdir="$cwd/scripts"
-gset="test"
-grammardir="$cwd/grammars"
-lexdir="$grammardir/lex"
-export gset grammardir lexdir
+export scriptsdir="$cwd/scripts"
+export gset="test"
+export grammardir="$cwd/grammars"
+export lexdir="$grammardir/lex"
 
 export testgrammars="amb2"
 export memlimit="512m"
 export resultsdir="$cwd/results"
+
+export glang="$grammardir/lang"
+export lgrammars="Pascal SQL Java C"
+export nlang="1"
 
 export accentdir="$wrkdir/accent"
 export ACCENT_DIR=$accentdir

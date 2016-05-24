@@ -4,7 +4,9 @@
 
 echo -e "\\n===> Fetching ambidexter grammars\\n"
 
-lang_dir="$grammardir/lang"
 wget -O /tmp/grammars.zip http://sites.google.com/site/basbasten/files/grammars.zip
-[ -d $lang_dir ] && rm -rf $lang_dir
-unzip -q -d $lang_dir grammars.zip
+[ -d $glang ] && rm -rf $glang
+mkdir $glang
+td=$(mktemp -d)
+unzip -q -d $td /tmp/grammars.zip
+rsync -auz $td/grammars/* $glang
