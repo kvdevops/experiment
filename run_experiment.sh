@@ -49,9 +49,6 @@ if [ "$exp" == "travis" ]; then
     $scriptsdir/run_acla.sh -g $g -t 10
     [ $(grep -c yes $resultsdir/acla/$g/10s/log) == 1 ] || exit 1
 
-    $scriptsdir/run_amber.sh -g $g -t 10 -n 1000000
-    [ $(grep -c yes $resultsdir/amber/$g/10s_examples_10000000/log) == 1 ] || exit 1
-
     $scriptsdir/run_amber.sh -g $g -t 10 -l 10
     [ $(grep -c yes $resultsdir/amber/$g/10s_length_10/log) == 1 ] || exit 1
 
@@ -60,12 +57,6 @@ if [ "$exp" == "travis" ]; then
 
     $scriptsdir/run_ambidexter.sh -g $g -t 10 -f slr1 -k 10
     [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-f_slr1_-k_10/log) == 1 ] || exit 1
-
-    $scriptsdir/run_ambidexter.sh -g $g -t 10 -i 0
-    [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-i_0/log) == 1 ] || exit 1
-
-    $scriptsdir/run_ambidexter.sh -g $g -t 10 -f slr1 -i 0
-    [ $(grep -c yes $resultsdir/ambidexter/$g/10s_-f_slr1_-i_0/log) == 1 ] || exit 1
 
     $scriptsdir/run_sinbad.sh -g $g -b dynamic1 -t 10 -d 10
     [ $(grep -c yes $resultsdir/sinbad/$g/10s_-b_dynamic1_-d_10/log) == 1 ] || exit 1
