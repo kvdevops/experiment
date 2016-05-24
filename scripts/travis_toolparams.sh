@@ -12,7 +12,7 @@ export memlimit="512m"
 export resultsdir="$cwd/results"
 
 export glang="$grammardir/lang"
-export lgrammars="Pascal SQL Java C"
+export lgrammars="SQL"
 export nlang="1"
 
 export accentdir="$wrkdir/accent"
