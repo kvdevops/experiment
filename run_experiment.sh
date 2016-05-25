@@ -72,7 +72,7 @@ fi
 scriptlist="$cwd/scriptlist"
 > $scriptlist
 
-for g in $gset; do  
+for g in $gset; do
   for timelimit in $timelimits; do
       echo "$scriptsdir/run_acla.sh -g $g -t $timelimit || exit \$?" >> $scriptlist
   done
@@ -101,7 +101,7 @@ for g in $gset; do
       echo "$scriptsdir/run_ambidexter.sh -g $g -t $timelimit -f lr0 -k $ambilen || exit \$?" >> $scriptlist
       echo "$scriptsdir/run_ambidexter.sh -g $g -t $timelimit -f lr1 -k $ambilen || exit \$?" >> $scriptlist
     done
-         
+
     echo "$scriptsdir/run_ambidexter.sh -g $g -t $timelimit -i 0 || exit \$?" >> $scriptlist
     echo "$scriptsdir/run_ambidexter.sh -g $g -t $timelimit -f slr1 -i 0 || exit \$?" >> $scriptlist
     echo "$scriptsdir/run_ambidexter.sh -g $g -t $timelimit -f lalr1 -i 0 || exit \$?" >> $scriptlist
